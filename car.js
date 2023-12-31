@@ -12,9 +12,13 @@ class Car{
         this.friction = 0.06
         this.controls = new Controls()
 
-        this.angel = 0
+        this.angle = 0
     }
+    //BOX2D can replace the below
     update() {
+        this.#move()
+    }
+    #move() {
         if (this.controls.forward) {
             this.speed+= this.acceleration
         }
@@ -36,19 +40,23 @@ class Car{
         if (Math.abs(this.speed) < this.friction) {
             this.speed = 0
         }
-        if (this.controls.left) {
-            this.angel+= 0.03
+        if (this.speed != 0) {
+            const flip = this.speed > 0 ? 1 : -1;
+            if (this.controls.left) {
+            this.angle+= 0.03*flip
+            }
+            if (this.controls.right) {
+                this.angle-= 0.03*flip
+            }
         }
-        if (this.controls.right) {
-            this.angel-= 0.03
-        }
-    
-        this.y-=this.speed
+
+        this.x -= Math.sin(this.angle) * this.speed
+        this.y-=Math.cos(this.angle)*this.speed
     }
     draw(ctx) {
         ctx.save()
         ctx.translate(this.x, this.y)
-        ctx.rotate(-this.angel)
+        ctx.rotate(-this.angle)
 
         ctx.beginPath()
         ctx.rect(
