@@ -1,3 +1,4 @@
+
 const canvas = document.getElementById("myCanvas");
 
 canvas.width = 400;
@@ -13,6 +14,9 @@ const centerY = canvas.height / 2;
 // Assuming the car's dimensions are 30 (width) and 50 (height)
 const carWidth = 30;
 const carHeight = 50;
+
+const road = new Road(canvas.width/2, canvas.width*0.894)
+
 const car = new Car(centerX-carWidth / 2, centerY-carHeight / 2, carWidth, carHeight);
 car.draw(ctx);
 
@@ -23,7 +27,9 @@ function animate() {
 
     // Clear the canvas before redrawing
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    road.draw(ctx)
     car.draw(ctx);
     requestAnimationFrame(animate);
 }
+
+
