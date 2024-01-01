@@ -17,10 +17,19 @@ class Road{
         const canvasHeight = ctx.canvas.height;
 
         this.top = 0; // top of the canvas
-        this.bottom = canvasHeight; // bottom of the canva
+        this.bottom = canvasHeight; // bottom of the canvas
         ctx.lineWidth = 5;
         ctx.strokeStyle = "white";
 
+        //lanes
+        for (let i = 0; i <= this.laneCount; i++){
+            // linear interplation
+            const x = lerp(
+                this.left,
+                this.right,
+                i/this.laneCount
+            )
+        }
         // Draw left border
         ctx.beginPath();
         ctx.moveTo(this.left, this.top);
@@ -33,4 +42,8 @@ class Road{
         ctx.lineTo(this.right, this.bottom);
         ctx.stroke();
     }
+}
+
+function lerp(a, b, t) {
+    return a+(b-a)*t
 }
