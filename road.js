@@ -1,6 +1,6 @@
 
 class Road{
-    constructor(x, width, laneCount = 8) {
+    constructor(x, width, laneCount = 7) {
         this.x = x
         this.width = width
         this.laneCount = laneCount
@@ -11,6 +11,11 @@ class Road{
         const inf = 1000000000000000000000;
         this.top = -inf
         this.bottom = inf
+    }
+
+    getLaneCenter(landeIndex) {
+        const laneWidth = this.width / this.laneCount
+        return this.left+laneWidth/2+landeIndex*laneWidth
     }
     
     draw(ctx) {
@@ -29,21 +34,18 @@ class Road{
                 this.right,
                 i/this.laneCount
             )
+            //road dashes
+            if (i > 0 && i < this.laneCount) {
+                ctx.setLineDash([20,20])
+            } else {
+                ctx.setLineDash([])   
+            }
+            // Draw border
+            ctx.beginPath();
+            ctx.moveTo(x, this.top);
+            ctx.lineTo(x, this.bottom);
+            ctx.stroke();
         }
-        // Draw left border
-        ctx.beginPath();
-        ctx.moveTo(this.left, this.top);
-        ctx.lineTo(this.left, this.bottom);
-        ctx.stroke();
-
-        // Draw right border
-        ctx.beginPath();
-        ctx.moveTo(this.right, this.top);
-        ctx.lineTo(this.right, this.bottom);
-        ctx.stroke();
     }
 }
 
-function lerp(a, b, t) {
-    return a+(b-a)*t
-}
