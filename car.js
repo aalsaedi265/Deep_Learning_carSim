@@ -10,13 +10,16 @@ class Car{
         this.acceleration = 0.5
         this.maxSpeed = 4
         this.friction = 0.06
-        this.controls = new Controls()
-
         this.angle = 0
+
+        this.sensor = new Sensor(this)
+        this.controls = new Controls()
+        
     }
     //BOX2D can replace the below
     update() {
         this.#move()
+        this.sensor.update()
     }
     #move() {
         if (this.controls.forward) {
@@ -67,6 +70,8 @@ class Car{
         )
         ctx.fill()
         ctx.restore()
+
+        this.sensor.draw(ctx)
     }
 }
 
