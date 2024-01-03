@@ -2,9 +2,9 @@
 class Sensor{
     constructor(car) {
         this.car = car
-        this.rayCount = 3
-        this.rayLength = 100
-        this.raySpread = Math.PI / 4 //45 degrees
+        this.rayCount = 30
+        this.rayLength = 180
+        this.raySpread = Math.PI *2 //45 degrees
         
         this.rays = []
     }
@@ -15,8 +15,8 @@ class Sensor{
             const rayAngle = lerp(
                 this.raySpread / 2,
                 -this.raySpread / 2,
-                i/(this.rayCount-1)
-            )
+                i / (this.rayCount - 1)
+            ) + this.car.angle
             const start = { x: this.car.x, y: this.car.y }
             const end = {
                 x: this.car.x - Math.sin(rayAngle)*this.rayLength,

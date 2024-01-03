@@ -21,6 +21,13 @@ class Road{
         [topLeft,bottomLeft],
         [topRight,bottomRight]
     ];
+    for(let y=-1000;y<=0;y++){
+          const x=Math.sin(y*0.01)*50;
+          this.borders[0].push({x:x+this.left,y:y});
+          this.borders[1].push({x:x+this.right,y:y});
+       }
+    this.borders[0].push(bottomLeft);
+    this.borders[1].push(bottomRight);
 
   }
 
@@ -55,12 +62,15 @@ class Road{
         ctx.stroke(); //outlines the current or given path with the current stroke style
         }
         ctx.setLineDash([])
-        this.borders.forEach(border => {
-            ctx.beginPath()
-            ctx.moveTo(border[0].x, border[0].y)
-            ctx.lineTo(border[1].x, border[1].y)
-            ctx.stroke()
-        })
+        this.borders.forEach(border=>{
+          ctx.beginPath();
+          ctx.moveTo(border[0].x,border[0].y);
+          for(let i=1;i<border.length;i++){
+             ctx.lineTo(border[i].x,border[i].y);
+          }
+          ctx.stroke();
+       });
+       ctx.setLineDash([]);
     }
 }
 
