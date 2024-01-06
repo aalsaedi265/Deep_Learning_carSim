@@ -17,9 +17,9 @@ class Car{
         
     }
     //BOX2D can replace the below
-    update() {
+    update(roadBorders) {
         this.#move()
-        this.sensor.update()
+        this.sensor.update(roadBorders)
     }
     #move() {
         if (this.controls.forward) {

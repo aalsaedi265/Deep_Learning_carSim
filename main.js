@@ -24,7 +24,7 @@ car.draw(ctx);
 animate();
 
 function animate() {
-    car.update();
+    car.update(road.borders);
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.save();

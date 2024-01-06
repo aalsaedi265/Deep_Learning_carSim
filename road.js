@@ -1,6 +1,5 @@
-
-class Road{
-  constructor(x, width, laneCount = 7) {//American lane number
+class Road {
+  constructor(x, width, laneCount = 7) {
     this.x = x;
     this.width = width;
     this.laneCount = laneCount;
@@ -21,14 +20,13 @@ class Road{
         [topLeft,bottomLeft],
         [topRight,bottomRight]
     ];
-    for(let y=-1000;y<=0;y++){
-          const x=Math.sin(y*0.01)*50;
-          this.borders[0].push({x:x+this.left,y:y});
-          this.borders[1].push({x:x+this.right,y:y});
-       }
-    this.borders[0].push(bottomLeft);
-    this.borders[1].push(bottomRight);
-
+    //Road {x: 100, width: 180, laneCount: 3, left: 10, right: 190}
+    // road.borders
+    // (2) [Array(2), Array(2)]
+    // 0: [ {x: 10, y: -1000000} 
+    //      {x: 10, y: 1000000 } ]
+    // 1: [ {x: 190, y: -1000000} 
+    //      {x: 190, y: 1000000 } ]
   }
 
   //define the center of each lane
@@ -41,9 +39,17 @@ class Road{
     return this.left+laneWidth/2+
       Math.min(laneIndex,this.laneCount-1)*laneWidth;
     // Return us the (laneCount) different lane indicies, an offset of laneWidth away from the middle of the first lane
-    }
-    
-      draw(ctx) {
+
+    // |    |    |    |   
+    // |    |    |    |   
+    // |    |    |    |   
+    // |    |    |    |   
+    // |    |    |    | 
+    // | 0  |  1 |  2 | 
+    // |    |    |    | 
+  }
+  // draw a road
+  draw(ctx) {
     ctx.lineWidth = 5;
     ctx.strokeStyle = "white";
 
@@ -55,22 +61,19 @@ class Road{
         i / this.laneCount
       );
 
-        ctx.setLineDash([20,20]);
-        ctx.beginPath(); //starts a new path by emptying the list of sub-paths
-        ctx.moveTo(x, this.top); //moves the current window to the specified coordinates.
-        ctx.lineTo(x, this.bottom); //adds a straight line to the current sub-path by connecting the sub-path's last point to the specified (x, y) coordinates.
-        ctx.stroke(); //outlines the current or given path with the current stroke style
-        }
-        ctx.setLineDash([])
-        this.borders.forEach(border=>{
-          ctx.beginPath();
-          ctx.moveTo(border[0].x,border[0].y);
-          for(let i=1;i<border.length;i++){
-             ctx.lineTo(border[i].x,border[i].y);
-          }
-          ctx.stroke();
-       });
-       ctx.setLineDash([]);
+      ctx.setLineDash([20,20]);
+      ctx.beginPath(); //starts a new path by emptying the list of sub-paths
+      ctx.moveTo(x, this.top); //moves the current window to the specified coordinates.
+      ctx.lineTo(x, this.bottom); //adds a straight line to the current sub-path by connecting the sub-path's last point to the specified (x, y) coordinates.
+      ctx.stroke(); //outlines the current or given path with the current stroke style
     }
-}
 
+    ctx.setLineDash([]);
+    this.borders.forEach(border=>{
+        ctx.beginPath(); 
+        ctx.moveTo(border[0].x, border[0].y);
+        ctx.lineTo(border[1].x, border[1].y);
+        ctx.stroke(); 
+    });
+  }
+}

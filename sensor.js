@@ -2,20 +2,52 @@
 class Sensor{
     constructor(car) {
         this.car = car
-        this.rayCount = 30
-        this.rayLength = 180
-        this.raySpread = Math.PI *2 //45 degrees
+        this.rayCount = 7
+        this.rayLength = 70
+        this.raySpread = Math.PI /2 //45 degrees
         
         this.rays = []
+        this.readings = []
+
     }
 
-    update() {
+    update(roadBorders) {
+        this.#castRays()
+        this.readings = []
+        for (let i = 0; i < this.rays.length; i++){
+            this.readings.push(
+                this.getReading(this.rays[i], roadBorders)
+            )
+        }
+    }
+    getReading(ray, roadBorders) {
+        let touches = []
+        for (let i = 0; i < roadBorders.length; i++){
+            const touch = getIntersection(
+            ray[0],
+            ray[1],
+            roadBorders[i][0]
+            )
+            if (touch) {
+                touches.push(touch)
+
+            }
+        }
+        if (touches.length == 0) {
+            return null
+        } else {
+            const offset = touches.map(e => e.offset)
+            const minOffset = min(...offset)
+            return touches.find(e => e.offset == minOffset)
+        }
+    }
+    #castRays() {
         this.rays = []
         for (let i = 0; i < this.rayCount; i++){
             const rayAngle = lerp(
                 this.raySpread / 2,
                 -this.raySpread / 2,
-                i / (this.rayCount - 1)
+                this.rayCount ==1? 0.5 : i / (this.rayCount - 1)
             ) + this.car.angle
             const start = { x: this.car.x, y: this.car.y }
             const end = {
@@ -25,7 +57,6 @@ class Sensor{
             this.rays.push([start, end]) //putting a segment
         }
     }
-
     draw(ctx) {
         if (this.rays.length === 0) {
             return; // Do nothing if rays are not yet initialized
