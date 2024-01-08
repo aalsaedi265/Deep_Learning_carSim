@@ -101,12 +101,12 @@ class Car{
         this.x -= Math.sin(this.angle) * this.speed
         this.y-=Math.cos(this.angle)*this.speed
     }
-    draw(ctx) {
+    draw(ctx, color) {
 
         if (this.damaged) {
             ctx.fillStyle = 'gray'
         } else {
-            ctx.fillStyle = "black"
+            ctx.fillStyle = color
         }
         ctx.beginPath()
        if (!this.polygon) return // check to make sure there is something before giving it try
