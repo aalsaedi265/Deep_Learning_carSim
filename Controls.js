@@ -1,14 +1,17 @@
 
 class Controls{
-    constructor() {
+    constructor(type) {
         this.forward = false;
         this.left = false
         this.right = false
         this.reverse = false
+        this.type = type
 
-        this.#addKeyboardListerners();
+         if (type === "KEYS") {
+            this.#addKeyboardListeners();
+        }
     }
-    #addKeyboardListerners() { // #this means private just lowecase letters in go
+    #addKeyboardListeners() { // #this means private just lowecase letters in go
         document.onkeydown = (event) => {
             switch (event.key) {
                 case "ArrowLeft":

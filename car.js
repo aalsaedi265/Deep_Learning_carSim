@@ -1,6 +1,6 @@
 
 class Car{
-    constructor(x, y, width, height) {
+    constructor(x, y, width, height, controlType, maxSpeed=5) {
         this.x = x
         this.y = y
         this.width = width
@@ -8,20 +8,23 @@ class Car{
 
         this.speed = 0
         this.acceleration = 0.5
-        this.maxSpeed = 4
+        this.maxSpeed = maxSpeed
         this.friction = 0.06
         this.angle = 0
         this.damaged = false
 
         this.sensor = new Sensor(this)
-        this.controls = new Controls()
+        this.controls = new Controls(controlType)
         
     }
     //BOX2D can replace the below
     update(roadBorders) {
-        this.#move()
-        this.polygon = this.#createPolygon()
-        this.damaged = this.#assessDamage(roadBorders)
+        if (!this.damaged) {
+            this.#move()
+            this.polygon = this.#createPolygon()
+            this.damaged = this.#assessDamage(roadBorders)
+        }
+        
         this.sensor.update(roadBorders)
     }
 
@@ -59,37 +62,41 @@ class Car{
     }
     
     #move() {
-        if (this.controls.forward) {
-            this.speed+= this.acceleration
-        }
-        if (this.controls.reverse) {
-            this.speed -= this.acceleration
-        }
-        if (this.speed > this.maxSpeed) {
-            this.speed = this.maxSpeed
-        }
-        if (this.speed < -this.maxSpeed / 2) {
-            this.speed =-this.maxSpeed/2
-        }
-        if (this.speed > 0) {
-            this.speed-=this.friction
-        }
-        if (this.speed < 0) {
-            this.speed+=this.friction
-        }
-        if (Math.abs(this.speed) < this.friction) {
-            this.speed = 0
-        }
-        if (this.speed != 0) {
-            const flip = this.speed > 0 ? 1 : -1;
-            if (this.controls.left) {
-            this.angle+= 0.03*flip
+        if (this.controls.type === "KEYS") {
+            if (this.controls.forward) {
+                this.speed += this.acceleration
             }
-            if (this.controls.right) {
-                this.angle-= 0.03*flip
+            if (this.controls.reverse) {
+                this.speed -= this.acceleration
+            }
+            if (this.speed > this.maxSpeed) {
+                this.speed = this.maxSpeed
+            }
+            if (this.speed < -this.maxSpeed / 2) {
+                this.speed = -this.maxSpeed / 2
+            }
+            if (this.speed > 0) {
+                this.speed -= this.friction
+            }
+            if (this.speed < 0) {
+                this.speed += this.friction
+            }
+            if (Math.abs(this.speed) < this.friction) {
+                this.speed = 0
+            }
+            if (this.speed != 0) {
+                const flip = this.speed > 0 ? 1 : -1;
+                if (this.controls.left) {
+                    this.angle += 0.03 * flip
+                }
+                if (this.controls.right) {
+                    this.angle -= 0.03 * flip
+                }
             }
         }
-
+        if (this.controls.type === "DUMMY") {
+            this.speed = this.maxSpeed;
+        }
         this.x -= Math.sin(this.angle) * this.speed
         this.y-=Math.cos(this.angle)*this.speed
     }
