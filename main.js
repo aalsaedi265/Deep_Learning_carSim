@@ -18,8 +18,8 @@ const carHeight = 50;
 const road = new Road(canvas.width/2, canvas.width*0.94)
 
 const car = new Car(road.getLaneCenter(3), centerY-carHeight / 2, carWidth, carHeight);
-car.draw(ctx);
 
+car.draw(ctx);
 
 animate();
 

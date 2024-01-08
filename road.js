@@ -33,20 +33,10 @@ class Road {
   getLaneCenter(laneIndex) {
     // laneIndex=[0,1,2,3]
     const laneWidth=this.width / this.laneCount;
-    // this.left+laneWidth/2 --> starts from the middle of theleft lane
-    // Math.min(laneIndex,this.laneCount-1)*laneWidth --> the car always goes to the right most possible lane
     
     return this.left+laneWidth/2+
       Math.min(laneIndex,this.laneCount-1)*laneWidth;
-    // Return us the (laneCount) different lane indicies, an offset of laneWidth away from the middle of the first lane
-
-    // |    |    |    |   
-    // |    |    |    |   
-    // |    |    |    |   
-    // |    |    |    |   
-    // |    |    |    | 
-    // | 0  |  1 |  2 | 
-    // |    |    |    | 
+   
   }
   // draw a road
   draw(ctx) {
@@ -63,9 +53,9 @@ class Road {
 
       ctx.setLineDash([20,20]);
       ctx.beginPath(); //starts a new path by emptying the list of sub-paths
-      ctx.moveTo(x, this.top); //moves the current window to the specified coordinates.
-      ctx.lineTo(x, this.bottom); //adds a straight line to the current sub-path by connecting the sub-path's last point to the specified (x, y) coordinates.
-      ctx.stroke(); //outlines the current or given path with the current stroke style
+      ctx.moveTo(x, this.top); 
+      ctx.lineTo(x, this.bottom); 
+      ctx.stroke();
     }
 
     ctx.setLineDash([]);
