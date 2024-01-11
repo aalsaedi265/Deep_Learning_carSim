@@ -6,9 +6,16 @@ class Controls{
         this.right = false
         this.reverse = false
         this.type = type
-
-         if (type === "KEYS") {
+        //  if (type === "KEYS") {
+        //     this.#addKeyboardListeners();
+        // }
+        switch (type) {
+        case "KEYS":
             this.#addKeyboardListeners();
+            break;
+        case "DUMMY":
+            this.forward=true;
+            break;
         }
     }
     #addKeyboardListeners() { // #this means private just lowecase letters in go
