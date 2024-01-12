@@ -40,3 +40,25 @@ function polysIntersect(poly1,poly2){
   }
   return false;
 }
+
+function getRGBA(value){
+  const alpha=Math.abs(value);
+    // const R=value<0?0:205;
+    // const G=R;
+    // const B=value>0?0:205;
+  // return "rgba("+R+","+G+","+B+","+alpha+")";
+  let R, G, B;
+  if (value > 0) {
+        // Positive weights (keep your existing color, assuming green)
+        R = 0;
+        G = 255;
+        B = 0;
+  } else {
+        // Negative weights (pink)
+        R = 255; // high red
+        G = 105; // lower green
+        B = 255; // high blue to create pink
+  }
+  return `rgba(${R},${G},${B},${alpha})`;
+}
+  
