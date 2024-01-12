@@ -30,28 +30,38 @@ function generateCar(N) {
 
 function animate(time) {
     for (const element of traffic){
-        element.update(road.borders, [])
+        element.update(road.borders, []);
     }
     for (let i = 0; i < cars.length; i++){
         cars[i].update(road.borders, traffic);
     }
+    
+    // Find the best performing car
+    const bestCar = cars.find(
+        c => c.y == Math.min(...cars.map(c => c.y))
+    );
 
     carCtx.clearRect(0, 0, carCanvas.width, carCanvas.height);
+    
     carCtx.save();
-    carCtx.translate(0, -cars[0].y + carCanvas.height * 0.7);
+    carCtx.translate(0, -bestCar.y + carCanvas.height * 0.7);
 
     road.draw(carCtx);
     for (const element of traffic){
-        element.draw(carCtx, "red")
+        element.draw(carCtx, "red");
     }
-    for (let i = 0; i < cars.length; i++){
-        cars[i].draw(carCtx, "green");
+
+    carCtx.globalAlpha = 0.2;
+    for (const car of cars){
+        car.draw(carCtx, "green");
     }
+
+    carCtx.globalAlpha = 1;
+    bestCar.draw(carCtx, "green", true); // Draw only the best car with full opacity
 
     carCtx.restore();
-    networkCtx.lineDashOffset = -time/50
-    Visualizer.drawNetwork(networkCtx,cars[0].brain);
+
+    networkCtx.lineDashOffset = -time / 50;
+    Visualizer.drawNetwork(networkCtx, bestCar.brain);
     requestAnimationFrame(animate);
 }
-
-
