@@ -16,9 +16,10 @@ const cars = generateCar(N)
 let bestCar = cars[0]
 
 if (localStorage.getItem("bestBrain")) {
-    bestCar.brain = JSON.parse(
-        localStorage.getItem("bestBrain")
-    )
+    for (let i = 0; i < cars.length; i++){
+        cars[i].brain = JSON.parse( localStorage.getItem("bestBrain"))
+    }
+    
 }
 
 const traffic = [
